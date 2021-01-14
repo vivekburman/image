@@ -234,14 +234,14 @@ export default class ImageTool {
        * Paste URL of image into the Editor
        */
       patterns: {
-        image: /https?:\/\/\S+\.(gif|jpe?g|tiff|png)$/i,
+        image: /https?:\/\/\S+\.(jpe?g|png)$/i,
       },
 
       /**
        * Drag n drop file from into the Editor
        */
       files: {
-        mimeTypes: [ 'image/*' ],
+        mimeTypes: [ 'image/png', 'image/jpg', 'image/jpeg' ],
       },
     };
   }
