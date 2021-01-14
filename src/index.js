@@ -64,6 +64,7 @@ import Uploader from './uploader';
  * @property {function(File): Promise.<UploadResponseFormat>} [uploader.uploadByFile] - method that upload image by File
  * @property {function(string): Promise.<UploadResponseFormat>} [uploader.uploadByUrl] - method that upload image by URL
  * @property {Array} [defaultElements] - optional, show only specific default elements
+ * @property {function(object)} [onRemove] - optional on delete trigger
  */
 
 /**
@@ -124,6 +125,7 @@ export default class ImageTool {
       uploader: config.uploader || undefined,
       actions: config.actions || [],
       defaultElements: config.defaultElements || ['caption', 'withBorder', 'stretched', 'withBackground'],
+      onRemove: config.onRemove || undefined
     };
 
     /**
@@ -232,14 +234,14 @@ export default class ImageTool {
        * Paste URL of image into the Editor
        */
       patterns: {
-        image: /https?:\/\/\S+\.(gif|jpe?g|tiff|png)$/i,
+        image: /https?:\/\/\S+\.(jpe?g|png)$/i,
       },
 
       /**
        * Drag n drop file from into the Editor
        */
       files: {
-        mimeTypes: [ 'image/*' ],
+        mimeTypes: [ 'image/png', 'image/jpg', 'image/jpeg' ],
       },
     };
   }
@@ -433,4 +435,17 @@ export default class ImageTool {
     this.ui.showPreloader(url);
     this.uploader.uploadByUrl(url);
   }
+  /**
+   * Fire config.onRemove with block data when block is deleted.
+   *
+   * @public
+   *
+   * @returns {void}
+   */
+  removed() {
+    if (this.config.onRemove && typeof this.config.onRemove === 'function') {
+      this.config.onRemove(this.data);
+    }
+  }
+
 }
